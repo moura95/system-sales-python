@@ -1,0 +1,337 @@
+https://dbdiagram.io/d/64b1874c02bd1c4a5e19431a
+Enum "plan_types" {
+  "Trial"
+  "Silver"
+  "Gold"
+}
+
+Enum "company_types" {
+  "Factory"
+  "Portage"
+}
+
+Enum "payment_receipt_type" {
+  "Payment"
+  "Receipt"
+}
+
+Enum "payment_receipt_form_type" {
+  "Pix"
+  "Invoice"
+  "Transfer"
+  "CreditCard"
+  "DebitCard"
+  "Cash"
+  "Cheque"
+  "Outros"
+}
+
+Enum "payment_receipt_status" {
+  "Pending"
+  "Paid"
+  "Expired"
+}
+
+Enum "status_enum" {
+  "Rascunho"
+  "Cotacao"
+  "Cancelado"
+  "Concluido"
+}
+
+Enum "shipping_enum" {
+  "CIF"
+  "FOB"
+  "Outros"
+}
+
+Enum "origin_leads_enum" {
+  "Facebook"
+  "Instagram"
+  "Google"
+  "Linkedin"
+  "Outros"
+}
+
+Table "tenants" {
+  "id" SERIAL [pk, increment]
+  "cnpj" VARCHAR(255) [unique]
+  "name" VARCHAR(255)
+  "fantasy_name" VARCHAR(255)
+  "ie" VARCHAR(255)
+  "phone" VARCHAR(255)
+  "email" VARCHAR(255)
+  "website" VARCHAR(255)
+  "logo_url" VARCHAR(255)
+  "plan" plan_types [not null, default: "Trial"]
+  "stripe_id" VARCHAR(255)
+  "data_expire" timestamp [not null, default: `NOW()`]
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "users" {
+  "id" SERIAL [pk, not null, increment]
+  "tenant_id" INT [not null]
+  "cpf" VARCHAR(255) [unique]
+  "first_name" VARCHAR(255) [not null]
+  "last_name" VARCHAR(255) [not null]
+  "email" TEXT [unique, not null]
+  "password" TEXT [not null]
+  "phone" VARCHAR(255)
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "last_login" timestamp [not null, default: `NOW()`]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+}
+
+Table "sellers" {
+  "id" SERIAL [pk, increment]
+  "tenant_id" INT [not null]
+  "cpf" VARCHAR(255) [not null]
+  "name" VARCHAR(255) [not null]
+  "phone" VARCHAR(255)
+  "email" VARCHAR(255)
+  "pix" VARCHAR(255)
+  "observation" VARCHAR(255)
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+table "addres" {
+  "type" varchar
+  "zip_code" varchar
+  "street" varchar
+  "number" varchar
+  "complement" varchar
+  "bairro" varchar
+  "state" varchar
+  "city" varchar
+
+}
+
+
+Table "companies" {
+  "id" SERIAL [pk, increment]
+  "tenant_id" INT [not null]
+  "type" company_types [not null]
+  "cpf_cnpj" VARCHAR(255)
+  "name" VARCHAR(255) [not null]
+  "fantasy_name" VARCHAR(255)
+  "ie" VARCHAR(255)
+  "phone" VARCHAR(255)
+  "email" VARCHAR(255)
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "payment_receipt" {
+  "id" SERIAL [pk, increment]
+  "tenant_id" INT [not null]
+  "type_payment" payment_receipt_type [not null]
+  "status" payment_receipt_status [not null, default: "Pending"]
+  "description" VARCHAR(255) [not null]
+  "amount" "DECIMAL(10, 2)" [not null]
+  "expiration_date" timestamp
+  "payment_date" timestamp
+  "doc_number" VARCHAR(255)
+  "Recipient" VARCHAR(255)
+  "payment_form" payment_receipt_form_type [not null, default: "Outros"]
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "installment" INT [not null, default: 1]
+  "interval_days" INT [not null, default: 30]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+  "additional_info" VARCHAR(255)
+}
+
+Table "files_payment_receipt" {
+  "id" SERIAL [pk, increment]
+  "payment_receipt_id" INT [not null]
+  "url_file" VARCHAR(255) [not null]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "products" {
+  "id" SERIAL [pk, increment]
+  "tenant_id" INT [not null]
+  "factory_id" INT
+  "name" VARCHAR(255) [not null]
+  "code" VARCHAR(255)
+  "bar_code" varchar
+  "price" "DECIMAL(10, 2)" [not null]
+  "cost_value" DECIMAL(10,2)
+  "reference" VARCHAR(255)
+  "unidade" varchar
+  "description" VARCHAR(255)
+  "image_url" VARCHAR(255)
+  "minimum_stock" INTEGER
+  "maximium_stock" INTEGER
+  "current_stock" INTEGER
+  "active_pdv" BOOLEAN
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "services" {
+  "id" SERIAL [pk, increment]
+  "sales_id" INT [not null]
+  "name" VARCHAR(255) [not null]
+  "code" VARCHAR(255)
+  "price" "DECIMAL(10, 2)" [not null]
+  "file_url" varchar
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "form_payments" {
+  "id" SERIAL [pk, increment]
+  "tenant_id" INT [not null]
+  "name" VARCHAR(255) [not null]
+}
+
+Table "orders" {
+  "id" SERIAL [pk, increment]
+  "tenant_id" INT [not null]
+  "factory_id" INT [not null]
+  "customer_id" INT [not null]
+  "portage_id" INT [not null]
+  "seller_id" INT [not null]
+  "form_payment_id" INT
+  "order_number" INT [not null]
+  "url_pdf" VARCHAR(255)
+  "buyer" VARCHAR(255)
+  "shipping" shipping_enum [not null, default: "Outros"]
+  "status" status_enum [not null, default: "Rascunho"]
+  "expired_at" timestamp [not null, default: `NOW()`]
+  "total" "DECIMAL(10, 2)" [not null, default: 0]
+  "is_active" BOOLEAN [not null, default: true]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "files_orders" {
+  "id" SERIAL [pk, increment]
+  "order_id" INT [not null]
+  "url_file" VARCHAR(255) [not null]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "core_orders_services"
+  {
+    "order_id" INTEGER
+    "service_id" INTEGER
+    "price" INTEGER
+    "discount" INTEGER
+    "total" DECIMAL(10,2)
+
+  }
+Table "order_products" {
+  "order_id" INT [not null]
+  "product_id" INT [not null]
+  "quantity" INT [not null]
+  "price" "DECIMAL(10, 2)" [not null]
+  "discount" "DECIMAL(10, 2)" [not null, default: 0]
+  "total" "DECIMAL(10, 2)" [not null, default: 0]
+
+Indexes {
+  (order_id, product_id) [pk]
+}
+}
+
+Table "calendars" {
+  "id" SERIAL [pk, increment]
+  "title" VARCHAR(255) [not null]
+  "visit_start" timestamp [not null]
+  "visit_end" timestamp [not null]
+  "allday" BOOLEAN [not null, default: FALSE]
+  "user_id" INT [not null]
+}
+
+Table "smtp" {
+  "tenant_id" INTEGER [pk, not null]
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "email" VARCHAR(255) [not null]
+  "password" VARCHAR(255) [not null]
+  "server" VARCHAR(100) [not null]
+  "port" INTEGER [not null]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "leads" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(255) [not null]
+  "email" VARCHAR(255) [unique, not null]
+  "phone" VARCHAR(255) [not null]
+  "origin" origin_leads_enum [not null, default: "Outros"]
+  "is_active" BOOLEAN [not null, default: TRUE]
+  "created_at" timestamp [not null, default: `NOW()`]
+  "updated_at" timestamp [not null, default: `NOW()`]
+}
+
+Table "activity" {
+  "id" SERIAL [pk, increment]
+  "action" VARCHAR(20) [not null]
+  "reference_url" VARCHAR(255) [not null]
+  "user_id" INT [not null]
+  "tenant_id" INT [not null]
+  "created_at" timestamp [not null, default: `NOW()`]
+}
+
+Ref:"tenants"."id" < "users"."tenant_id" [delete: cascade]
+
+Ref:"users"."id" < "user_permissions"."user_id" [delete: cascade]
+
+Ref:"permissions"."id" < "user_permissions"."permission_id" [delete: cascade]
+
+Ref:"users"."id" < "sessions"."user_id" [delete: cascade]
+
+Ref:"tenants"."id" < "sellers"."tenant_id" [delete: cascade]
+
+Ref:"tenants"."id" < "companies"."tenant_id" [delete: cascade]
+
+Ref:"tenants"."id" < "payment_receipt"."tenant_id" [delete: cascade]
+
+Ref:"payment_receipt"."id" < "files_payment_receipt"."payment_receipt_id" [delete: cascade]
+
+Ref:"tenants"."id" < "products"."tenant_id" [delete: cascade]
+
+Ref:"companies"."id" < "products"."factory_id" [delete: cascade]
+
+Ref:"tenants"."id" < "form_payments"."tenant_id" [delete: cascade]
+
+Ref:"tenants"."id" < "orders"."tenant_id" [delete: cascade]
+
+Ref:"companies"."id" < "orders"."factory_id" [delete: cascade]
+
+Ref:"companies"."id" < "orders"."customer_id" [delete: cascade]
+
+Ref:"companies"."id" < "orders"."portage_id" [delete: cascade]
+
+Ref:"sellers"."id" < "orders"."seller_id" [delete: cascade]
+
+Ref:"form_payments"."id" < "orders"."form_payment_id" [delete: cascade]
+
+Ref:"orders"."id" < "files_orders"."order_id" [delete: cascade]
+
+Ref:"orders"."id" < "order_products"."order_id" [delete: cascade]
+
+Ref:"products"."id" < "order_products"."product_id" [delete: cascade]
+
+Ref:"users"."id" < "calendars"."user_id" [delete: cascade]
+
+Ref:"tenants"."id" < "smtp"."tenant_id" [delete: cascade]
+
+Ref:"users"."id" < "activity"."user_id" [delete: cascade]
+
+Ref:"tenants"."id" < "activity"."tenant_id" [delete: cascade]

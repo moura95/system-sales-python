@@ -1,0 +1,51 @@
+services:
+  midas_sales_pdf:
+    image: lucasgaitzsch/pdf-turtle:latest-playground
+    environment:
+      - LOG_LEVEL_DEBUG=true
+      - LOG_JSON_OUTPUT=true
+      - RENDER_TIMEOUT=30
+      - WORKER_INSTANCES=30
+      - PORT=8000
+      - MAX_BODY_SIZE=32
+      - SERVE_PLAYGROUND=true
+      - SECRET=""
+    ports:
+      - "8000:8000"
+  midas_sales_db:
+    image: postgres:latest
+    container_name: midas_sales_db
+    user: postgres
+    environment:
+      - POSTGRES_DB=midas_sales
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5431:5432"
+    volumes:
+      - db:/var/lib/psql/data
+  midas_sales_redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  midas_sales_worker:
+    build: .
+    command: celery -A midas_sales.tasks worker --loglevel=info
+    environment:
+      - CELERY_BROKER_URL=redis://midas_sales_redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://midas_sales_redis:6379/0
+    depends_on:
+      - midas_sales_web
+      - midas_sales_redis
+  midas_sales_web:
+    build: .
+    ports:
+      - 5000:5000
+    environment:
+      - CELERY_BROKER_URL=redis://midas_sales_redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://midas_sales_redis:6379/0
+    depends_on:
+      - midas_sales_redis
+
+volumes:
+  db:

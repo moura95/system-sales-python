@@ -1,0 +1,143 @@
+{
+  "tenant": {
+    "name": "Midas",
+    "cnpj": "123456789",
+    "logo_url": "https://res.cloudinary.com/domwy2hmn/image/upload/v1684533017/MidasLogoGestor_xcyexk.png"
+  },
+  "seller": {
+    "name": "Victor",
+    "email": "victor@hotmail.com",
+    "phone": "123456789"
+  },
+  "customer": {
+    "name": "Cliente 1",
+    "fantasy_name": "Cleiber Fantasy",
+    "cnpj": "123456789",
+    "street": "Rua 1",
+    "ie": "123456789",
+    "number": "1",
+    "district": "Bairro 1",
+    "city": "Cidade 1",
+    "state": "Estado 1",
+    "zip_code": "00000-000",
+    "email": "andremartins@hotmail.com",
+    "phone": "00000000000"
+  },
+  "order": {
+    "buyer": "comprador",
+    "observation": "Observação 1",
+    "number": "1",
+    "status": "Pendente",
+    "payment_form": "Forma de pagamento 1",
+    "created_at": "2023-07-18",
+    "contact_date": "2021-10-10",
+    "expired_at": "2021-10-10",
+    "delivery_date": "2021-10-10",
+    "total_products": 1000,
+    "total_services": 1000,
+    "total": 2000.0
+  },
+  "products": [
+    {
+      "name": "Produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0,
+      "description": "Descrição do produto 1"
+    },
+    {
+      "name": "Produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0,
+      "description": "Descrição do produto 1"
+    },
+    {
+      "name": "Produto 12",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0,
+      "description": "Descrição do produto 1"
+    },
+    {
+      "name": "Produto 13",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0,
+      "description": "Descrição do produto 1"
+    },
+    {
+      "name": "Produto 14",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0,
+      "description": "Descrição do produto 1"
+    },
+    {
+      "name": "Produto 15",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0,
+      "description": "Descrição do produto 1"
+    }
+  ],
+  "services": [
+    {
+      "name": "Serviço 1",
+      "description": "Descrição do produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0
+    },
+    {
+      "name": "Serviço 12",
+      "description": "Descrição do produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0
+    },
+    {
+      "name": "Serviço 13",
+      "description": "Descrição do produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0
+    },
+    {
+      "name": "Serviço 14",
+      "description": "Descrição do produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0
+    },
+    {
+      "name": "Serviço 51",
+      "description": "Descrição do produto 1",
+      "code": "0001",
+      "price": 100.0,
+      "quantity": 1,
+      "discount": 0.0,
+      "total": 100.0
+    }
+  ]
+}
